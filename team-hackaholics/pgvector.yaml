@@ -1,0 +1,59 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: test-pgvector-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pgvector
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pgvector
+  template:
+    metadata:
+      labels:
+        app: pgvector
+    spec:
+      containers:
+        - name: pgvector
+          image: pgvector/pgvector:pg17
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_DB
+              value: "vectors"
+            - name: POSTGRES_USER
+              value: "pgvector"
+            - name: POSTGRES_PASSWORD
+              value: "password"
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+          volumeMounts:
+            - name: postgres-storage
+              mountPath: /var/lib/postgresql/data
+              subPath: pgdata
+      volumes:
+        - name: postgres-storage
+          persistentVolumeClaim:
+            claimName: test-pgvector-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pgvector
+spec:
+  selector:
+    app: pgvector
+  ports:
+    - port: 5432
+      targetPort: 5432
+  type: ClusterIP
