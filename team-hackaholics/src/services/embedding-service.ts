@@ -8,7 +8,8 @@ import { sql } from "drizzle-orm";
 export const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
-const model = process.env.OPENAI_EMBEDDING_MODEL ?? "text-embedding-3-small";
+const EMBEDDING_MODEL =
+  process.env.OPENAI_EMBEDDING_MODEL ?? "text-embedding-3-small";
 
 function connectToDb() {
   const queryClient = postgres(process.env.DATABASE_URL!);
@@ -46,7 +47,7 @@ export async function processEmbeddingsForFhirResource(
 
   // Generate embedding using OpenAI
   const embeddingResponse = await openai.embeddings.create({
-    model: "text-embedding-3-small",
+    model: EMBEDDING_MODEL,
     input: textContentForEmbedding,
     encoding_format: "float",
   });
@@ -71,7 +72,7 @@ export async function embeddingSearch(text: string, patientId: string) {
 
   // Generate embedding for search text
   const embeddingResponse = await openai.embeddings.create({
-    model: model,
+    model: EMBEDDING_MODEL,
     input: text,
   });
   const searchEmbedding = embeddingResponse.data[0].embedding;
