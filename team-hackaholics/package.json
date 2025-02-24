@@ -1,0 +1,22 @@
+{
+  "name": "hackathon-2025-team-hackaholics",
+  "module": "src/main.ts",
+  "type": "module",
+  "scripts": {
+    "main": "bun run src/main.ts"
+  },
+  "dependencies": {
+    "@medplum/core": "^4.0.0",
+    "@medplum/fhirtypes": "^4.0.0",
+    "@netlify/functions": "^3.0.0",
+    "dotenv": "^16.4.7",
+    "drizzle-orm": "^0.39.3",
+    "openai": "^4.85.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.4",
+    "@types/pg": "^8.11.11",
+    "drizzle-kit": "^0.30.4",
+    "netlify-cli": "^18.1.0"
+  }
+}
