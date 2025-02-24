@@ -11,21 +11,23 @@
             "watchMode": false
         },
         {
+            "name": "netlify dev",
             "type": "node",
             "request": "launch",
-            "name": "Debug Netlify Functions",
-            "program": "${workspaceFolder}/node_modules/netlify-cli/bin/run",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "outFiles": [
+                "${workspaceFolder}/.netlify/functions-serve/**/*.js"
+            ],
+            "program": "${workspaceFolder}/node_modules/.bin/netlify",
             "args": [
                 "dev"
             ],
-            "runtimeArgs": [
-                "--inspect"
-            ],
             "console": "integratedTerminal",
-            "cwd": "${workspaceFolder}",
-            "skipFiles": [
-                "<node_internals>/**"
-            ]
+            "env": {
+                "BROWSER": "none"
+            }
         }
     ]
 }

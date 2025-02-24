@@ -1,9 +1,9 @@
 import { Handler } from "@netlify/functions";
 import { processEmbeddingsForFhirResource } from "../../services/embedding-service";
 
-export const handleFhirSubscription: Handler = async (event) => {
+export const handler: Handler = async (event) => {
   try {
-    if (event.body === null) {
+    if (!event.body) {
       return { statusCode: 400, body: "Missing body" };
     }
 
