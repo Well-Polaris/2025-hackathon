@@ -1,0 +1,35 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Drizzle Push",
+			"type": "shell",
+			"command": "npm run db:push",
+			"presentation": {
+				"reveal": "always",
+				"panel": "dedicated"
+			},
+			"problemMatcher": []
+		},
+		{
+			"label": "Typecheck",
+			"type": "shell",
+			"command": "npm run tsc",
+			"presentation": {
+				"reveal": "always",
+				"panel": "dedicated"
+			},
+			"problemMatcher": []
+		},
+		{
+			"label": "Clean up debugging processes",
+			"type": "shell",
+			"command": "for port in 5173 5174 8888; do lsof -i TCP:$port | grep LISTEN | awk '{print $2}' | xargs -r kill -9; done",
+			"presentation": {
+				"reveal": "always",
+				"panel": "dedicated"
+			},
+			"problemMatcher": []
+		},
+	]
+}

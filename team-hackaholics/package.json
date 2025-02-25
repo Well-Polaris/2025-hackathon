@@ -6,7 +6,8 @@
     "main": "bun run src/main.ts",
     "netlify": "netlify dev",
     "db:migrate": "tsx src/db/migrate.ts",
-    "db:generate": "drizzle-kit generate"
+    "db:generate": "drizzle-kit generate",
+    "db:push": "drizzle-kit push"
   },
   "dependencies": {
     "@medplum/core": "^4.0.0",
