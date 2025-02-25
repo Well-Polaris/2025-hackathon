@@ -1,10 +1,17 @@
-import { pgTable, text, timestamp, varchar } from "drizzle-orm/pg-core";
+import { pgTable, text, varchar } from 'drizzle-orm/pg-core';
+import { customType } from 'drizzle-orm/pg-core';
 
-export const documentEmbeddings = pgTable("document_embeddings", {
-  id: text("id").primaryKey(),
-  patientId: text("patient_id").notNull(),
-  resourceType: varchar("resource_type", { length: 50 }).notNull(),
-  content: text("content").notNull(),
-  embedding: text("embedding").notNull(),
-  createdAt: timestamp("created_at").defaultNow(),
+// Create a custom type for vector
+const vector = customType<{ data: number[] }>({
+  dataType() {
+    return 'vector(1536)';
+  },
+});
+
+export const documentEmbeddings = pgTable('document_embeddings', {
+  id: varchar('id').primaryKey(),
+  patientId: varchar('patient_id').notNull(),
+  resourceType: varchar('resource_type').notNull(),
+  content: text('content').notNull(),
+  embedding: vector('embedding').notNull(),
 });

@@ -4,7 +4,9 @@
   "type": "module",
   "scripts": {
     "main": "bun run src/main.ts",
-    "netlify": "netlify dev"
+    "netlify": "netlify dev",
+    "db:migrate": "tsx src/db/migrate.ts",
+    "db:generate": "drizzle-kit generate"
   },
   "dependencies": {
     "@medplum/core": "^4.0.0",
@@ -12,13 +14,15 @@
     "@netlify/functions": "^3.0.0",
     "dotenv": "^16.4.7",
     "drizzle-orm": "^0.39.3",
-    "openai": "^4.85.3"
+    "openai": "^4.85.3",
+    "postgres": "^3.4.3"
   },
   "devDependencies": {
     "@types/node": "^22.13.4",
     "@types/pg": "^8.11.11",
     "drizzle-kit": "^0.30.4",
     "netlify-cli": "^18.1.0",
-    "ts-node": "^10.9.2"
+    "ts-node": "^10.9.2",
+    "tsx": "^4.7.1"
   }
 }

@@ -58,7 +58,7 @@ export async function processEmbeddingsForFhirResource(
     patientId,
     resourceType: resource.resourceType,
     content: textContentForEmbedding,
-    embedding: JSON.stringify(embeddingResponse.data[0].embedding),
+    embedding: sql`${JSON.stringify(embeddingResponse.data[0].embedding)}::vector(1536)`,
   });
 
   return { message: "Successfully processed embedding" };
@@ -80,10 +80,10 @@ export async function embeddingSearch(text: string, patientId: string) {
   const db = connectToDb();
   return await db.execute(
     sql`
-    SELECT content, 1 - (embedding <=> ${searchEmbedding}) as similarity
+    SELECT content, 1 - (embedding <=> ${sql`${JSON.stringify(searchEmbedding)}::vector(1536)`}) as similarity
     FROM document_embeddings
     WHERE patient_id = ${patientId}
-    ORDER BY embedding <=> ${searchEmbedding}
+    ORDER BY embedding <=> ${sql`${JSON.stringify(searchEmbedding)}::vector(1536)`}
     LIMIT 5
     `
   );
