@@ -31,5 +31,15 @@
 			},
 			"problemMatcher": []
 		},
+		{
+			"label": "Docker pgvector",
+			"type": "shell",
+			"command": "docker compose up",
+			"presentation": {
+				"reveal": "always",
+				"panel": "dedicated"
+			},
+			"problemMatcher": []
+		}
 	]
 }
