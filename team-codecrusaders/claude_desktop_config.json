@@ -5,8 +5,8 @@
       },
       "env": {
         "FHIR_BASE_URL": "https://data.dev.apps.health/fhir/R4",
-        "FHIR_CLIENT_ID": "0194848f-d7f1-7006-8f98-2d3c932c3237",
-        "FHIR_CLIENT_SECRET": "33797c14f1afb73c856913c08aee38c9586dea2cd42e49b5fc4758b06ae1ade4",
+        "FHIR_CLIENT_ID": "<CLIENT_ID>",
+        "FHIR_CLIENT_SECRET": "<CLIENT_SECRET>",
         "FHIR_TOKEN_URL": "https://data.dev.apps.health/oauth/token"
       }
     }
