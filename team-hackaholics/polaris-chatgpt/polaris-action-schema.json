@@ -1,0 +1,165 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "FHIR API",
+    "version": "1.1.0"
+  },
+  "servers": [
+    {
+      "url": "https://data.dev.apps.health"
+    }
+  ],
+  "paths": {
+    "/fhir/R4/Patient/{id}": {
+      "get": {
+        "summary": "Get a Patient by ID",
+        "operationId": "GetPatient",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Patient resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/fhir/R4/Practitioner": {
+      "get": {
+        "summary": "Search Practitioners",
+        "operationId": "SearchPractitioners",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Search by practitioner name"
+          },
+          {
+            "name": "specialty",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Search by practitioner specialty"
+          },
+          {
+            "name": "identifier",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Search by unique practitioner identifier"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of Practitioner resources",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "specialty": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/fhir/R4/Task": {
+      "get": {
+        "summary": "Get Active Tasks for a Practitioner",
+        "operationId": "GetActiveTasksForPractitioner",
+        "parameters": [
+          {
+            "name": "owner",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "Practitioner/{id}"
+            },
+            "description": "Owner ID (must be prefixed with 'Practitioner/')"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["active", "in-progress", "on-hold"]
+            },
+            "description": "Filter tasks by status"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of active tasks for the practitioner",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "status": {
+                        "type": "string"
+                      },
+                      "description": {
+                        "type": "string"
+                      },
+                      "practitioner": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
