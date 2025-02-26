@@ -3,12 +3,12 @@ import { processEmbeddingsForFhirResource } from "../../services/embedding-servi
 
 export const handler: Handler = async (event) => {
   try {
+    console.log("Received FHIR subscription event:", event);
     if (!event.body) {
       return { statusCode: 400, body: "Missing body" };
     }
-
-    const payload = JSON.parse(event.body);
-    const result = await processEmbeddingsForFhirResource(payload.resource);
+    const resource = JSON.parse(event.body);
+    const result = await processEmbeddingsForFhirResource(resource);
 
     return {
       statusCode: 200,
