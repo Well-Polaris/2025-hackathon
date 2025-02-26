@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+import dotenv from 'dotenv';
+
 /**
  * This is a FHIR MCP server implementation that provides access to FHIR resources.
  * It supports:
@@ -22,6 +24,8 @@ import {
 } from "@modelcontextprotocol/sdk/types.js";
 import axios from 'axios';
 
+dotenv.config();
+
 interface FHIRConfig {
   baseUrl: string;
   clientId: string;
@@ -35,6 +39,8 @@ const config: FHIRConfig = {
   clientSecret: process.env.FHIR_CLIENT_SECRET || '',
   tokenUrl: process.env.FHIR_TOKEN_URL || '',
 };
+
+let cachedToken: { token: string; expiresAt: number } | null = null;
 
 // FHIR client setup
 const fhirClient = axios.create({
@@ -216,7 +222,7 @@ interface TokenResponse {
   token_type: string;
 }
 
-let cachedToken: { token: string; expiresAt: number } | null = null;
+
 
 async function getToken(): Promise<string> {
   // Return cached token if it's still valid (with 60-second buffer)
