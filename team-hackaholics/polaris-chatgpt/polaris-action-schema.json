@@ -203,6 +203,56 @@
           }
         }
       }
+    },
+    "/fhir/R4/DiagnosticReport": {
+      "get": {
+        "summary": "Get Diagnostic Reports by Patient ID",
+        "operationId": "GetDiagnosticReportsByPatient",
+        "parameters": [
+          {
+            "name": "patient",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Patient ID to filter diagnostic reports"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of diagnostic reports for the patient",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "status": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "subject": {
+                        "type": "string"
+                      },
+                      "effectiveDateTime": {
+                        "type": "string",
+                        "format": "date-time"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }
