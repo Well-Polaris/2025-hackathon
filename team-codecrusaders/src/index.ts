@@ -36,7 +36,7 @@ const config: FHIRConfig = {
 const fhirClient = axios.create({
   baseURL: config.baseUrl,
   headers: {
-    'Authorization': `Bearer ${config.accessToken}`,
+    'Authorization': `Bearer ${getToken()}`,
     'Content-Type': 'application/fhir+json',
     'Accept': 'application/fhir+json',
   },
@@ -222,3 +222,8 @@ main().catch((error) => {
   console.error("Server error:", error);
   process.exit(1);
 });
+function getToken() {
+  // TODO: Get a real token
+  return config.accessToken;
+}
+
