@@ -34,7 +34,7 @@
     "/fhir/R4/MedicationStatement": {
       "get": {
         "summary": "Get all medications for a patient by patient ID",
-        "description": "Put the patient ID in the format patient/ID (e.g. patient/1234567890)", 
+        "description": "Put the subject in the format Patient/ID (e.g. Patient/1234567890)", 
         "operationId": "GetMedicationsForPatient",
         "parameters": [
           { 
