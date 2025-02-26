@@ -36,6 +36,7 @@ const config: FHIRConfig = {
   tokenUrl: process.env.FHIR_TOKEN_URL || '',
 };
 
+let cachedToken: { token: string; expiresAt: number } | null = null;
 // FHIR client setup
 const fhirClient = axios.create({
   baseURL: config.baseUrl,
@@ -216,7 +217,7 @@ interface TokenResponse {
   token_type: string;
 }
 
-let cachedToken: { token: string; expiresAt: number } | null = null;
+
 
 async function getToken(): Promise<string> {
   // Return cached token if it's still valid (with 60-second buffer)
