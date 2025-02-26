@@ -10,13 +10,34 @@
     }
   ],
   "paths": {
+    "/fhir/R4/Patient": {
+      "get": {
+        "summary": "Find a patient by name",
+        "operationId": "FindPatientByName",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of patients matching the name"
+          }
+        }
+      }
+    },
     "/fhir/R4/MedicationStatement": {
       "get": {
         "summary": "Get all medications for a patient by patient ID",
         "operationId": "GetMedicationsForPatient",
         "parameters": [
           { 
-            "name": "patient",
+            "name": "subject",
             "in": "query",
             "required": true,
             "schema": {
