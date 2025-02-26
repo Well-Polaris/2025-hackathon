@@ -1,0 +1,13 @@
+{
+    "mcpServers": {
+      "fhir": {
+        "command": "/path/to/@flexpa/mcp-fhir/build/index.js"
+      },
+      "env": {
+        "FHIR_BASE_URL": "https://data.dev.apps.health/fhir/R4",
+        "FHIR_CLIENT_ID": "<CLIENT_ID>",
+        "FHIR_CLIENT_SECRET": "<CLIENT_SECRET>",
+        "FHIR_TOKEN_URL": "https://data.dev.apps.health/oauth/token"
+      }
+    }
+  }
