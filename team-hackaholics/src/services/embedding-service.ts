@@ -1,4 +1,4 @@
-import { DocumentReference, Resource } from "@medplum/fhirtypes";
+import { Resource } from "@medplum/fhirtypes";
 import { drizzle } from "drizzle-orm/postgres-js";
 import { OpenAI } from "openai";
 import postgres from "postgres";
@@ -34,16 +34,7 @@ export async function processEmbeddingsForFhirResource(
   }
 
   // Extract text content based on resource type
-  let textContentForEmbedding = "";
-  if (resource.resourceType === "DocumentReference") {
-    textContentForEmbedding =
-      (resource as DocumentReference).content?.[0]?.attachment?.data || "";
-  } else if ((resource as { text: { div: string } }).text) {
-    const fhirResourceWithText = resource as { text: { div: string } };
-    textContentForEmbedding = fhirResourceWithText.text?.div || "";
-  } else {
-    textContentForEmbedding = JSON.stringify(resource);
-  }
+  let textContentForEmbedding = JSON.stringify(resource);
 
   // Generate embedding using OpenAI
   const embeddingResponse = await openai.embeddings.create({
@@ -68,7 +59,7 @@ export async function processEmbeddingsForFhirResource(
 }
 
 export async function embeddingSearch(text: string, patientId: string) {
-  if (!text || !patientId) {
+  if (!text) {
     throw new Error("Missing required parameters");
   }
 
@@ -81,8 +72,9 @@ export async function embeddingSearch(text: string, patientId: string) {
 
   // Perform vector similarity search
   const db = connectToDb();
-  return await db.execute(
-    sql`
+  if (patientId) {
+    return await db.execute(
+      sql`
     SELECT content, 1 - (embedding <=> ${sql`${JSON.stringify(
       searchEmbedding
     )}::vector(1536)`}) as similarity
@@ -93,5 +85,20 @@ export async function embeddingSearch(text: string, patientId: string) {
     )}::vector(1536)`}
     LIMIT 5
     `
-  );
+    );
+  } else {
+    // skip the patient WHERE clause:
+    return await db.execute(
+      sql`
+    SELECT content, 1 - (embedding <=> ${sql`${JSON.stringify(
+      searchEmbedding
+    )}::vector(1536)`}) as similarity
+    FROM document_embeddings
+    ORDER BY embedding <=> ${sql`${JSON.stringify(
+      searchEmbedding
+    )}::vector(1536)`}
+    LIMIT 5
+    `
+    );
+  }
 }
