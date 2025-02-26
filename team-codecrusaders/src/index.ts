@@ -270,3 +270,6 @@ main().catch((error) => {
   process.exit(1);
 });
 
+// Export config and getToken for testing
+export { config, getToken };
+
