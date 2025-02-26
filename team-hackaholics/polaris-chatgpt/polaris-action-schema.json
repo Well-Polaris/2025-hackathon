@@ -12,7 +12,7 @@
   "paths": {
     "/fhir/R4/Patient/{id}": {
       "get": {
-        "summary": "Get a Patient by ID",
+        "summary": "Get the Patient",
         "operationId": "GetPatient",
         "parameters": [
           {
@@ -106,8 +106,8 @@
     },
     "/fhir/R4/Task": {
       "get": {
-        "summary": "Get Active Tasks for a Practitioner",
-        "operationId": "GetActiveTasksForPractitioner",
+        "summary": "Get Tasks",
+        "operationId": "GetTasks",
         "parameters": [
           {
             "name": "owner",
