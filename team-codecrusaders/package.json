@@ -6,7 +6,8 @@
   "scripts": {
     "build": "tsc",
     "start": "node build/index.js",
-    "inspector": "npx @modelcontextprotocol/inspector node build/index.js"
+    "inspector": "npx @modelcontextprotocol/inspector node build/index.js",
+    "test": "jest"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.3",
@@ -19,5 +20,10 @@
     "jest": "^29.7.0",
     "ts-jest": "^29.2.6",
     "typescript": "^5.3.3"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "testMatch": ["**/__tests__/**/*.test.ts"]
   }
 }
