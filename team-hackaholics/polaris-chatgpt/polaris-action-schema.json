@@ -10,6 +10,27 @@
     }
   ],
   "paths": {
+    "/fhir/R4/MedicationStatement": {
+      "get": {
+        "summary": "Get all medications for a patient by patient ID",
+        "operationId": "GetMedicationsForPatient",
+        "parameters": [
+          { 
+            "name": "patient",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of medications for the patient"
+          }
+        }
+      }
+    },
     "/fhir/R4/Patient/{id}": {
       "get": {
         "summary": "Get the Patient",
