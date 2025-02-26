@@ -217,6 +217,15 @@
               "type": "string"
             },
             "description": "Patient ID to filter diagnostic reports"
+          },
+          {
+            "name": "subject",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Subject reference to filter diagnostic reports"
           }
         ],
         "responses": {
