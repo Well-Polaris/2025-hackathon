@@ -24,12 +24,16 @@ import axios from 'axios';
 
 interface FHIRConfig {
   baseUrl: string;
-  accessToken: string;
+  clientId: string;
+  clientSecret: string;
+  tokenUrl: string;
 }
 
 const config: FHIRConfig = {
   baseUrl: process.env.FHIR_BASE_URL || '',
-  accessToken: process.env.FHIR_ACCESS_TOKEN || '',
+  clientId: process.env.FHIR_CLIENT_ID || '',
+  clientSecret: process.env.FHIR_CLIENT_SECRET || '',
+  tokenUrl: process.env.FHIR_TOKEN_URL || '',
 };
 
 // FHIR client setup
@@ -206,9 +210,52 @@ server.setRequestHandler(CallToolRequestSchema, async (request: CallToolRequest)
   }
 });
 
+interface TokenResponse {
+  access_token: string;
+  expires_in: number;
+  token_type: string;
+}
+
+let cachedToken: { token: string; expiresAt: number } | null = null;
+
+async function getToken(): Promise<string> {
+  // Return cached token if it's still valid (with 60-second buffer)
+  if (cachedToken && Date.now() < cachedToken.expiresAt - 60000) {
+    return cachedToken.token;
+  }
+
+  try {
+    const response = await axios.post<TokenResponse>(
+      config.tokenUrl,
+      new URLSearchParams({
+        grant_type: 'client_credentials',
+        client_id: config.clientId,
+        client_secret: config.clientSecret,
+      }),
+      {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      }
+    );
+
+    // Cache the token
+    cachedToken = {
+      token: response.data.access_token,
+      expiresAt: Date.now() + (response.data.expires_in * 1000),
+    };
+
+    return response.data.access_token;
+  } catch (error: any) {
+    throw new Error(`Failed to obtain access token: ${error.message}`);
+  }
+}
+
 async function main() {
-  if (!config.baseUrl || !config.accessToken) {
-    throw new Error('FHIR_BASE_URL and FHIR_ACCESS_TOKEN environment variables must be set');
+  if (!config.baseUrl || !config.clientId || !config.clientSecret || !config.tokenUrl) {
+    throw new Error(
+      'Required environment variables not set. Please set: FHIR_BASE_URL, FHIR_CLIENT_ID, FHIR_CLIENT_SECRET, FHIR_TOKEN_URL'
+    );
   }
   
   // Validate FHIR server connection by fetching capability statement
@@ -222,8 +269,4 @@ main().catch((error) => {
   console.error("Server error:", error);
   process.exit(1);
 });
-function getToken() {
-  // TODO: Get a real token
-  return config.accessToken;
-}
 
