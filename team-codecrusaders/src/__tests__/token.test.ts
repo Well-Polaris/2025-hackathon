@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from '@jest/globals';
-import { config, getToken } from '../index.js';
+import { config, getToken } from '../index';
 
 describe('Token Integration Tests', () => {
   beforeEach(() => {
