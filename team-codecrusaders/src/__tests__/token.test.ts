@@ -3,12 +3,6 @@ import { config, getToken } from '../index.js';
 
 describe('Token Integration Tests', () => {
   beforeEach(() => {
-    // Clear any cached tokens before each test
-    process.env.FHIR_BASE_URL = process.env.FHIR_BASE_URL || '';
-    process.env.FHIR_CLIENT_ID = process.env.FHIR_CLIENT_ID || '';
-    process.env.FHIR_CLIENT_SECRET = process.env.FHIR_CLIENT_SECRET || '';
-    process.env.FHIR_TOKEN_URL = process.env.FHIR_TOKEN_URL || '';
-
     // Verify environment variables are set
     if (!process.env.FHIR_BASE_URL || !process.env.FHIR_CLIENT_ID || 
         !process.env.FHIR_CLIENT_SECRET || !process.env.FHIR_TOKEN_URL) {
